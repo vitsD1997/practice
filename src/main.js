@@ -1,25 +1,20 @@
 import { MongoClient } from "mongodb";
 
- async function insertRecord() {
-    const uri = "mongodb://127.0.0.1";
-    
-    const client = new MongoClient(uri);
+async function readMessage() {
+  const uri = "mongodb://127.0.0.1";
+  const client = new MongoClient(uri);
 
-    const db = client.db("mydb");
-    const message = db.collection("message");
+  //logic of read
+  let db = client.db("mydb");
+  let message = db.collection("message");
 
-    let jsonDocument = { message: "hello world", to: "santosh", from: "tejas" };
-    await message.insertOne(jsonDocument);
-
-    //close the connection
-
-   await client.close();
-   console.log("record added");
- }
-   async function main() {
-    let jsonDocument = { message: "hello world", to: "santosh", from: "tejas"};
-    await insertRecord(jsonDocument);
-   }
-
+  let list = await message.find().toArray();
+  console.log(list);
+  await client.close();
+}
+async function main() {
+  let jsonDocument = { message: "hello world", to: "vitthal", from: "tejas" };
+  readMessage();
+}
 
 main();
